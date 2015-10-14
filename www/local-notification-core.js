@@ -420,8 +420,17 @@ exports.registerPermission = function (callback, scope) {
         fn(true);
         return;
     }
+    this.hasPermission(function(granted){
+        if(granted){
+            //permission already granted
+            fn(true);
+        } else {
+            //ask for permission
+            exec(fn, null, 'LocalNotification', 'registerPermission', []);        
+        }
+    });
 
-    exec(fn, null, 'LocalNotification', 'registerPermission', []);
+    
 };
 
 
